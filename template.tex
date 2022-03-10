@@ -1,0 +1,271 @@
+\documentclass[12pt]{report}
+
+\usepackage{ctex}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\graphicspath{{images/}}
+\usepackage[a4paper,width=180mm,top=25mm,
+bottom=25mm]{geometry}
+\usepackage{caption}
+\usepackage{subcaption} %used for subfigure
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[]{thesis title}
+
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset{
+    numbers=left, 
+    numberstyle= \tiny, 
+    keywordstyle= \color{ blue!70},
+    commentstyle= \color{red!50!green!50!blue!50}, 
+    frame=shadowbox, % 阴影效果
+    rulesepcolor= \color{ red!20!green!20!blue!20} ,
+    escapeinside=``, % 英文分号中可写入中文
+    xleftmargin=2em,xrightmargin=2em, aboveskip=1em,
+    framexleftmargin=2em,
+	tabsize=4,
+	language=c++
+} 
+
+\title{
+    {Thesis Title}\\
+    {\large Institution Name}\\
+    {\includegraphics{piesat.jpg}}
+}
+\author{Author Name}
+\date{Day Month Year}
+
+\begin{document}
+
+\maketitle
+
+\chapter*{Abstract}
+this is a template of learning latex.
+
+\chapter*{Dedication}
+To mum and dad
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+\chapter{Introduction}
+\section{space}
+attention machnical is \  important.\par
+attention machnical is \quad important.\par %use \quad to generate space.
+attention machnical is \hfill  important.\par   % \hfill:adaptive space. 
+
+\section{special mark}
+\# \$ \% \{ \} \_{} \^{} \textbackslash \&
+
+\section{引号}
+`hello' ``hello'' ``  '' "hello"
+
+\section{math formular}
+exchange formular is $a+b=b+a$ \par
+exchange formular is \begin{math}
+    a+b=b+a
+\end{math} \par
+exchange formular is \(a+b=b+a\) \par
+exchange formular is 
+\begin{equation}
+    a+b=b+a \label{eq:1}
+\end{equation}
+
+$$\alpha^{20}+\beta_{20}+\gamma^2=0$$
+
+\section{希腊字母}
+$\alpha$ $\beta$ $\gamma$ $\epsilon$ $\pi$
+$\omega$ $\Gamma$ $\Delta$ 
+
+\section{table}
+this is the basic table of latex.
+\begin{table}
+    \centering
+    \begin{tabular}{l | l | r}
+        \hline
+        a & b & c\\
+        \hline
+        1 & 2 & 3\\
+        1 & 5 & 6\\
+        \hline 
+    \end{tabular}
+    \caption{basic table}
+    \label{basic_tab}
+\end{table}
+
+\section{subtable}
+here is the subtable.
+\begin{table}
+    \begin{subtable}[h]{0.45\textwidth}
+        \centering
+        \begin{tabular}{ccc}\\
+            xiao & wen & miao\\
+            \hline
+            98 & 95 & 100\\
+            98 & 95 & 100\\
+            98 & 95 & 100\\
+            98 & 95 & 100\\
+            \hline
+            
+        \end{tabular}
+        \caption{first}
+        \label{first}
+    \end{subtable}
+    \hfill
+    \begin{subtable}[h]{0.45\textwidth}
+        \centering
+        \begin{tabular}{ccc}\\
+            xiao & wen & miao\\
+            \hline
+            98 & 95 & 100\\
+            98 & 95 & 100\\
+            98 & 95 & 100\\
+            98 & 95 & 100\\
+            \hline
+            
+        \end{tabular}
+        \caption{second}
+        \label{second}
+    \end{subtable}
+    \caption{subfigure}
+    \label{sub}
+\end{table}
+
+\section{figure}
+安装好ACIS软件后，需要添加两个系统变量A3DT和ARCH。
+A3DT的值设置为安装路径。
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{piesat.jpg}
+        \caption{piesat1}
+        \label{piesat1}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{piesat.jpg}
+        \caption{piesat1}
+        \label{piesat2}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{piesat.jpg}
+        \caption{piesat1}
+        \label{piesat3}
+    \end{subfigure}
+    \caption{piesat}
+    \label{piesat}
+\end{figure}
+
+\section{简单的ACIS程序}
+\lstset{language=c++}
+\begin{lstlisting}
+#include <stdio.h>
+#include "acis.hxx"
+#include "kernapi.hxx"
+#include"api.hxx"
+#include"cstrapi.hxx"
+#include"lists.hxx"
+#include"alltop.hxx"
+#include"get_top.hxx"
+#include"spatial_license.h"
+#include"license.hxx"
+#include "spa_unlock_result.hxx"
+
+using namespace std;
+
+void do_something_cuboid();
+void do_something();
+int my_initialization();
+int my_termination();
+
+
+
+// The main program...
+int main(int argc, char** argv) {
+
+	int ret_val = my_initialization();
+	if (ret_val)
+		return 1;
+
+	do_something_cuboid();
+
+	ret_val = my_termination();
+	if (ret_val)
+		return 1;
+
+	return 0;
+}
+
+void do_something()
+{
+	//your application code
+	printf("hello world!\n");
+}
+
+
+int my_initialization()
+{
+	outcome result = api_start_modeller(0);
+	if (!result.ok()) {
+		err_mess_type err_no = result.error_number();
+		printf("error in api_start_modeller() %d:%s\n", 
+			err_no, find_err_mess(err_no));
+		return err_no;
+	}
+
+	// This can be done right after calling api_start_modeller().
+	spa_unlock_result out = spa_unlock_products(SPATIAL_LICENSE);
+
+	api_initialize_constructors();
+
+	return 0;
+}
+
+int my_termination()
+{
+	api_terminate_constructors();
+
+	outcome result = api_stop_modeller();
+	if (!result.ok()) {
+		err_mess_type err_no = result.error_number();
+		printf("error in api_stop_modeller() %d:%s\n",
+			err_no, find_err_mess(err_no));
+		return err_no;
+	}
+
+	return 0;
+}
+\end{lstlisting}
+
+CPU Core i5-10500
+显卡 AMD Radeon 520 ( 2 GB / 宝龙达 )
+内存 16G
+固态硬盘 240G
+机械硬盘 1T
+
+\chapter{chapter two}
+\input{chapters/chapter02.tex}
+
+\chapter{Conclusion}
+we discuss CBAM(convolution block attention model). about 
+channel attention model and spatial model. see \ref{fig:1}.
+\begin{figure}[h]
+    \centering
+    \includegraphics{piesat.jpg}
+    \caption{the picture of piesat}
+    \label{fig:1}
+\end{figure}[h]
+
+\appendix
+\chapter{appendix title}
+we discuss CBAM(convolution block attention model). about 
+channel attention model and spatial model.
+
+
+
+\end{document}
